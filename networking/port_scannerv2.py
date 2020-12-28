@@ -108,7 +108,7 @@ def main ():
                 end_port = int(input("\tPlease enter an integer in the range [start_port+1, 49151]\n: "))
 
             start = time.time()
-            check_port_range(hostIP, start_port, end_port)
+            check_port_range(hostIP, start_port, end_port+1)
             t = (time.time() - start)
             print("\tScanned %d ports in %.3f seconds"%((end_port - start_port), t))
 
