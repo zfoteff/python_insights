@@ -6,7 +6,7 @@ log_dir = r"C:/users/public/roaming"
 
 try:
     logging.basicConfig (
-                        filename=(log_dir+"log.txt"), level=logging.debug,
+                        filename=(log_dir+"log.txt"),
                         format='%(asctime)s: %(message)s'
                         )
 except FileNotFoundError:

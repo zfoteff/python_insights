@@ -4,6 +4,7 @@ import sys
 from datetime import datetime
 from contextlib import closing
 
+socket.setdefaulttimeout(.001)
 remoteServerIP = input("Enter IP Addr to Scan: ")
 
 print("-"*45)
@@ -13,17 +14,17 @@ print("-"*45)
 start = datetime.now()
 
 try:
-    for port in range (1, 1027):
+    for port in range (1, 1023):
         with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
             result = s.connect_ex((remoteServerIP, port))
 
             if result == 0:
                 # connection found
-                print ("[+] Port %d:\tOpen"%(port))
+                print ("[+] Port %d: \tOpen"%(port))
 
             else:
                 # No connection found
-                print ("[-] Port %d:\tClosed"%(port))
+                print ("[-] Port %d: \tClosed"%(port))
 
 except KeyboardInterrupt:
     print ("\n\tTerminating Scan ...")
@@ -34,5 +35,6 @@ except socket.error:
     sys.exit()
 
 end = datetime.now()
-t = float(end - start)
-print ("Scan completed in %.3f seconds"%(t))
+t = (end - start)
+t = t.seconds
+print ("Scan completed in %d seconds"%(t))
