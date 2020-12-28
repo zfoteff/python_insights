@@ -1,9 +1,11 @@
 import socket
 import sys
 import time
-from termcolor import colored
+import colorama
+from colorama import Fore
 from contextlib import closing
 
+colorama.init(autoreset = True)
 socket.setdefaulttimeout(0.01)
 
 def check_port(ip, port_num):
@@ -13,11 +15,11 @@ def check_port(ip, port_num):
 
             if result == 0:
                 #   Connection found
-                print (colored("[+] Port %d: \tOpen"%(port_num), 'green'))
+                print (Fore.GREEN+"[+] Port %d: \tOpen"%(port_num))
 
             else:
                 #   No Connection found
-                print (colored("[-] Port %d: \tClosed"%(port_num), 'red'))
+                print (Fore.RED+"[-] Port %d: \tClosed"%(port_num))
 
     except socket.error:
         print ("\tUnable to connect to server. Terminating ...")
@@ -43,7 +45,8 @@ def main ():
                 +"\n\t[2]\tAll Registered Ports"
                 +"\n\t[3]\tSpecific Port"
                 +"\n\t[4]\tSpecific Range of Ports"
-                +"\n\t[5]\tQuit\n: "))
+				+"\n\t[5]\tEnter new IP Address"
+                +"\n\t[6]\tQuit\n: "))
 
             #   User input checking with try loop and while loop
             while choice < 1 or choice > 5:
@@ -79,7 +82,7 @@ def main ():
             except ValueError:
                 # User enters a character other than an integer
                 port_choice = int(input("\tPlease enter an integer in the range [0, 49151]\n:"))
-            
+
             start = time.time()
             check_port(hostIP, port_choice)
             t = (time.time() - start)
@@ -113,7 +116,10 @@ def main ():
             print("\tScanned %d ports in %.3f seconds"%((end_port - start_port), t))
 
         elif choice == 5:
+            hostIP = input("Enter an IP Addr. to scan: ")
+
+        elif choice == 6:
             #   Exit the program
             break
-    
+
 main()
