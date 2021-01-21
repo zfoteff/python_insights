@@ -9,5 +9,14 @@ def mapInt (numList):
 
 # One-line solution
 result = int(''.join(map(str, numList))
+```
 
+## Solution to generate a permuation of the alphabet
+
+```
+# Generate List
+lst = [chr(i) for i in range(ord('A), ord('Z')]
+# Permute List
+list = Permutations(lst).random_element()
+print(lst)
 ```

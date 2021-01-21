@@ -50,7 +50,7 @@ def main ():
 
             #   User input checking with try loop and while loop
             while choice < 1 or choice > 5:
-                choice = int(input("\tPlease select one of numbered options above\n: "))
+                choice = int(input("\tPlease select one of the numbered options above\n: "))
 
         except ValueError:
             #   User enters a character other than an integer
