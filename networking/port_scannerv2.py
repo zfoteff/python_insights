@@ -76,8 +76,8 @@ def main ():
             try:
                 port_choice = int(input("\tSelect a port to scan\n: "))
 
-                while port_choice < 0 or port_choice >= 49151:
-                    port_choice = int(input("\tSelect a port in the range [0, 49151]\n:"))
+                while port_choice < 0 or port_choice >= 65535:
+                    port_choice = int(input("\tSelect a port in the range [0, 65535]\n:"))
 
             except ValueError:
                 # User enters a character other than an integer
