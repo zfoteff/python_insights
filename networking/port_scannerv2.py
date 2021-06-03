@@ -5,7 +5,6 @@ import colorama
 from colorama import Fore
 from contextlib import closing
 
-colorama.init(autoreset = True)
 socket.setdefaulttimeout(0.01)
 
 def check_port(ip, port_num):
