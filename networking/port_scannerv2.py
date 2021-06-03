@@ -1,11 +1,14 @@
 import socket
 import sys
 import time
-import colorama
-from colorama import Fore
+from termcolor import colored
 from contextlib import closing
 
+<<<<<<< HEAD
 socket.setdefaulttimeout(0.01)
+=======
+socket.setdefaulttimeout(0.1)
+>>>>>>> 56629542c5f8c904449d3c7642e86972a3a4dbf6
 
 def check_port(ip, port_num):
     try:
@@ -14,11 +17,11 @@ def check_port(ip, port_num):
 
             if result == 0:
                 #   Connection found
-                print (Fore.GREEN+"[+] Port %d: \tOpen"%(port_num))
+                print (colored("[+] Port %d: \tOpen"%(port_num), "green"))
 
             else:
                 #   No Connection found
-                print (Fore.RED+"[-] Port %d: \tClosed"%(port_num))
+                print (colored("[-] Port %d: \tClosed"%(port_num), "red"))
 
     except socket.error:
         print ("\tUnable to connect to server. Terminating ...")
@@ -48,7 +51,7 @@ def main ():
                 +"\n\t[6]\tQuit\n: "))
 
             #   User input checking with try loop and while loop
-            while choice < 1 or choice > 5:
+            while choice < 1 or choice > 6:
                 choice = int(input("\tPlease select one of the numbered options above\n: "))
 
         except ValueError:
@@ -75,8 +78,8 @@ def main ():
             try:
                 port_choice = int(input("\tSelect a port to scan\n: "))
 
-                while port_choice < 0 or port_choice >= 49151:
-                    port_choice = int(input("\tSelect a port in the range [0, 49151]\n:"))
+                while port_choice < 0 or port_choice >= 65535:
+                    port_choice = int(input("\tSelect a port in the range [0, 65535]\n:"))
 
             except ValueError:
                 # User enters a character other than an integer

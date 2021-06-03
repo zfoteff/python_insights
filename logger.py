@@ -3,6 +3,7 @@ import platform
 import sys
 import logging
 
+<<<<<<< HEAD
 win_dir = r"C:/users/public/roaming"
 lin_dir = r"/tmp"
 log_dir = win_dir
@@ -10,6 +11,9 @@ log_dir = win_dir
 if platform.system() == 'Linux':
     log_dir = lin_dir
 
+=======
+log_dir = r"C:/users/public/roaming/"
+>>>>>>> 56629542c5f8c904449d3c7642e86972a3a4dbf6
 
 try:
     logging.basicConfig (
