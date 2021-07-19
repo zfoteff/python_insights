@@ -4,11 +4,7 @@ import time
 from termcolor import colored
 from contextlib import closing
 
-<<<<<<< HEAD
-socket.setdefaulttimeout(0.01)
-=======
 socket.setdefaulttimeout(0.1)
->>>>>>> 56629542c5f8c904449d3c7642e86972a3a4dbf6
 
 def check_port(ip, port_num):
     try:
