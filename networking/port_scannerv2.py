@@ -1,23 +1,26 @@
 import socket
-import sys
 import time
-from termcolor import colored
+import colorama
 from contextlib import closing
 
-socket.setdefaulttimeout(0.01)
+colorama.init()
+
+socket.setdefaulttimeout(0.005)
 
 def check_port(ip, port_num):
+    results = []
     try:
         with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
             result = s.connect_ex((ip, port_num))
 
             if result == 0:
                 #   Connection found
-                print (colored("[+] Port %d: \tOpen"%(port_num), "green"))
+                print (colorama.Fore.GREEN+f"[+] Port {port_num}: \tOpen")
+                results.append(port_num)
 
             else:
                 #   No Connection found
-                print (colored("[-] Port %d: \tClosed"%(port_num), "red"))
+                print (colorama.Fore.RED+f"[-] Port {port_num}: \tClosed")
 
     except socket.error:
         print ("\tUnable to connect to server. Terminating ...")
@@ -29,7 +32,7 @@ def check_port_range(ip, port_start, port_end):
             check_port(ip, port)
 
     except KeyboardInterrupt:
-        print ("\tTerminating Scan ...\n")
+        print (colorama.Fore.WHITE+"\tTerminating Scan ...\n")
         return
 
 def main ():
@@ -60,14 +63,14 @@ def main ():
             start = time.time()
             check_port_range(hostIP, 0, 1024)
             t = (time.time() - start)
-            print("\tScanned 1024 ports in %.3f seconds"%(t))
+            print(colorama.Fore.WHITE+"\tScanned 1024 ports in %.3f seconds"%(t))
 
         elif choice == 2:
             #   Scan all 49151 registered logical ports on the host
             start = time.time()
             check_port_range(hostIP, 0, 49151)
             t = (time.time() - start)
-            print("\tScanned 49152 ports in %.3f seconds"%(t))
+            print(colorama.Fore.WHITE+"\tScanned 49152 ports in %.3f seconds"%(t))
 
         elif choice == 3:
             #   Scan specific port
@@ -84,7 +87,7 @@ def main ():
             start = time.time()
             check_port(hostIP, port_choice)
             t = (time.time() - start)
-            print ("\tScanned port %d in %.5f seconds"%(port_choice, t))
+            print (colorama.Fore.WHITE+"\tScanned port %d in %.5f seconds"%(port_choice, t))
 
         elif choice == 4:
             #   Scan user defined range of options
@@ -111,7 +114,7 @@ def main ():
             start = time.time()
             check_port_range(hostIP, start_port, end_port+1)
             t = (time.time() - start)
-            print("\tScanned %d ports in %.3f seconds"%((end_port - start_port), t))
+            print(colorama.Fore.WHITE+"\tScanned %d ports in %.3f seconds"%((end_port - start_port), t))
 
         elif choice == 5:
             hostIP = input("Enter an IP Addr. to scan: ")
