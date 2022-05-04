@@ -1,5 +1,5 @@
-#!/usr/bin/env/ python3
-
+"""LinkedList data structure implemented in Python
+"""
 class Node:
     def __init__(self, key, val):
         self.key = key

